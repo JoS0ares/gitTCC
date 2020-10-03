@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JoS0ares/gitTCC/issues"
   },
-  "homepage": "https://github.com/JoS0ares/gitTCC#readme"
+  "homepage": "https://github.com/JoS0ares/gitTCC#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
