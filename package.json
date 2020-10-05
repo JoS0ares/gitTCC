@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/JoS0ares/gitTCC#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2"
   }
 }
