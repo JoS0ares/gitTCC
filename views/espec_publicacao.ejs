@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar publicacao</title>
+</head>
+<body>
+    <main>
+        <form action="/criar_public" method="post">
+            <table>
+                <tr>
+                    <td>Nome da publicação</td>
+                    <td><input type="text" name="nome_public" id="nome_public" placeholder="Escreva aqui"></td>
+                </tr>
+                <tr>
+                    <td>Nome da banda</td>
+                    <td><input type="text" name="nome_banda" id="nome_banda" value="Sem banda" placeholder="Escreva o nome da banda"></td>
+                </tr>
+                <tr>
+                    <td>BPM</td>
+                    <td><input type="number" name="bpm_table" id="bpm_table"></td>
+                </tr>
+                <tr>
+                    <td>Descrição adicional (opcional)</td>
+                    <td><textarea name="desc_adicional" id="desc_adicional" value="*" cols="30" rows="10"></textarea></td>
+                </tr>
+            </table>
+            <p>
+                <button type="reset">Cancelar</button>
+                <button type="submit">Enviar</button>
+            </p>
+        </form>
+    </main>
+</body>
+</html>
