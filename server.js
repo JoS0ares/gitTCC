@@ -4,6 +4,7 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://JoS0ares:esfigmomanometro@tcc.sd9zw.gcp.mongodb.net/TCC?retryWrites=true&w=majority";
 const ejs = require('ejs');
+const { json } = require('body-parser');
 var db;
 
 app.use(bodyParser.urlencoded());
@@ -27,8 +28,21 @@ app.get('/home', (req,res) => {
 app.get('/espec_publicacao', (req,res)=>{
     res.render('espec_publicacao.ejs');
 });
-app.get('/criar_publicacao', (req,res)=>{
-    res.render('criar_publicacao.ejs');
+app.get('/criar_publicacao/:name/:id', (req,res)=>{
+    console.dir(req.params);
+    db.collection('publicacao').find().toArray((err,results)=>{
+        let dados = results,dado;
+        // console.dir(dados);
+        dados.forEach(element => {
+            if(element._id == req.params.id) {
+                console.dir(element);
+                dado = element;
+            }
+        });
+        // console.dir(dado);   
+        res.render('criar_publicacao.ejs', {document: dado});
+    });
+    // console.dir(req.baseUrl);
 });
 
 // POST
@@ -54,7 +68,8 @@ app.post('/criar_public', (req,res) => {
             res.redirect('back');
             console.log(err);
         }
-        res.redirect('back');
+        res.redirect('/criar_publicacao/' + dados.nome_public + '/' + dados._id);
+        // res.redirect('back');
         console.log(dados);
     });
 });

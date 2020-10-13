@@ -17,11 +17,69 @@
     </header>
 
     <main>
-        <h1></h1>
+        <p>
+            <h1><%= document.nome_public %></h1>
+            <h4><%= document.desc_adicional + ", " + document.nome_banda %></h4>
+        </p>
 
         <div id="criar" class="div_criar">
             <span>+</span>
         </div>
+
+
+
+        <article id="add_tab" class="modal">
+            <div>
+                <a href="#fechar" title="fechar" class="fechar">X</a>
+                <h2>Detalhes do techo</h2>
+                <table>
+                    <tr>
+                        <td>Nome do trecho:</td>
+                        <td><input type="text" name="detalhe_nome" id="detalhe_nome" placeholder="ex: verso1, ponte, solo, etc."></td>
+                    </tr>
+                    <tr>
+                        <td>Tipo do compasso:</td>
+                        <td><select name="tipo_compass" id="tipo_compass">
+                            <option value="tipo1">2/4</option>
+                            <option value="tipo2">3/4</option>
+                            <option value="tipo3" selected>4/4</option>
+                            <option value="tipo4">5/4</option>
+                            <option value="tipo5">7/8</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>Quantidade de compassos:</td>
+                        <td><input type="number" name="quant_compass" id="quant_compass"></td>
+                    </tr>
+                    <tr>
+                        <td>Batidas por tempo:</td>
+                        <td><select name="beat_temp" id="beat_temp">
+                            <option value="_1">01</option>
+                            <option value="_2">02</option>
+                            <option value="_3">03</option>
+                            <option value="_4" selected>04</option>
+                            <option value="_5">05</option>
+                            <option value="_6">06</option>
+                            <option value="_7">07</option>
+                            <option value="_8">08</option>
+                            <option value="_9">09</option>
+                            <option value="_10">10</option>
+                            <option value="_11">11</option>
+                            <option value="_12">12</option>
+                            <option value="_13">13</option>
+                            <option value="_14">14</option>
+                            <option value="_15">15</option>
+                            <option value="_16">16</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>numero de linhas (peças):</td>
+                        <td><input type="number" name="num_row" id="num_row"></td>
+                    </tr>
+                </table>
+                <p><button>Cancelar</button><button>Concluir</button></p>
+            </div>
+        </article>
     </main>
 
     <div id="deseja_voltar" class="modal">
