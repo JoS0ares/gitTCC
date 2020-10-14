@@ -22,15 +22,24 @@
             <h4><%= document.desc_adicional + ", " + document.nome_banda %></h4>
         </p>
 
+        <%  
+
+        %>
+
         <div id="criar" class="div_criar">
             <span>+</span>
         </div>
 
 
 
-        <article id="add_tab" class="modal">
-            <div>
-                <a href="#fechar" title="fechar" class="fechar">X</a>
+        
+    </main>
+
+
+    <div id="add_tab" class="modal">
+        <div>
+            <a href="#fechar" title="fechar" class="fechar">X</a>
+            <form action="/novo_trecho" method="post">
                 <h2>Detalhes do techo</h2>
                 <table>
                     <tr>
@@ -77,14 +86,13 @@
                         <td><input type="number" name="num_row" id="num_row"></td>
                     </tr>
                 </table>
-                <p><button>Cancelar</button><button>Concluir</button></p>
-            </div>
-        </article>
-    </main>
-
+                <p><button type="reset">Cancelar</button><button type="submit">Concluir</button></p>
+            </form>
+        </div>
+    </div>
     <div id="deseja_voltar" class="modal">
         <div>
-            <a href="#fechar" title="fechar" class="fechar"></a>
+            <a href="#fechar" title="fechar" class="fechar">X</a>
             <h2>Deseja mesmo sair?</h2>
             <p>Voltar irá excluir todo o seu progresso nesta página.</p>
             <p><button>Cancelar</button><button>Sim</button></p>
