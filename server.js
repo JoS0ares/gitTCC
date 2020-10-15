@@ -5,6 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://JoS0ares:esfigmomanometro@tcc.sd9zw.gcp.mongodb.net/TCC?retryWrites=true&w=majority";
 const ejs = require('ejs');
 const { json } = require('body-parser');
+const { ObjectId } = require('mongodb');
 var db;
 
 app.use(bodyParser.urlencoded());
@@ -32,17 +33,14 @@ app.get('/criar_publicacao/:name/:id', (req,res)=>{
     console.dir(req.params);
     db.collection('publicacao').find().toArray((err,results)=>{
         let dados = results,dado;
-        // console.dir(dados);
+
         dados.forEach(element => {
             if(element._id == req.params.id) {
-                console.dir(element);
                 dado = element;
             }
         });
-        // console.dir(dado);   
         res.render('criar_publicacao.ejs', {document: dado});
     });
-    // console.dir(req.baseUrl);
 });
 
 // POST
@@ -69,7 +67,33 @@ app.post('/criar_public', (req,res) => {
             console.log(err);
         }
         res.redirect('/criar_publicacao/' + dados.nome_public + '/' + dados._id);
-        // res.redirect('back');
         console.log(dados);
     });
+});
+
+app.post('/novo_trecho/:id_tabela', (req,res) => {
+    console.dir(req.body);
+    console.dir(req.params);
+
+    let trechos;
+
+    db.collection('tablatura').find({_id: ObjectId(req.params.id_tabela)}).toArray((err,results)=>{
+        console.dir(results);
+        trechos = results[0].trechos;
+        console.dir(trechos);
+    });
+    
+    // db.collection('tablatura').updateOne({_id: ObjectId(req.params.id_tabela)},
+    //     {
+    //         $set: {
+    //             trechos: trechos
+    //         }
+    //     }, (err, result) => {
+    //         if (err) return res.send(err);
+    //         res.redirect('back');
+    //         db.collection('tablatura').find({_id: ObjectId(req.params.id_tabela)}).toArray((err,results)=>{
+    //             console.dir(results);
+    //         })
+    //     }
+    // );
 });

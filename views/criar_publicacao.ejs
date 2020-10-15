@@ -10,6 +10,14 @@
         padding: 0px;
         margin: 0px;
     }
+    .modal {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .modal:target {
+        opacity: 1;
+        pointer-events: auto;
+    }
 </style>
 <body>
     <header>
@@ -19,15 +27,13 @@
     <main>
         <p>
             <h1><%= document.nome_public %></h1>
-            <h4><%= document.desc_adicional + ", " + document.nome_banda %></h4>
+            <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
         </p>
 
-        <%  
-
-        %>
+        <% %>
 
         <div id="criar" class="div_criar">
-            <span>+</span>
+            <span><a href="#add_tab">+</a></span>
         </div>
 
 
@@ -39,7 +45,7 @@
     <div id="add_tab" class="modal">
         <div>
             <a href="#fechar" title="fechar" class="fechar">X</a>
-            <form action="/novo_trecho" method="post">
+            <form action="/novo_trecho/<%= document.tablatura_id %>" method="post">
                 <h2>Detalhes do techo</h2>
                 <table>
                     <tr>
