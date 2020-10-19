@@ -29,9 +29,24 @@
             <h1><%= document.nome_public %></h1>
             <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
         </p>
+        <table>
+        <% tablatura._trechos.forEach(element => {
+            %><tr><th><%= element.nome; %></th><% for(var i = 0;i < element.quant_compass;i++) {
+                %>
+                <td><table><% element.linhas.forEach(element1 => {
+                    
+                    %><tr>
+                        <% for(var j = 0;j < element1.colunas.length;j++) {
 
-        <% %>
-
+                            %><td><input type="checkbox" id="check<%= j %>"></td><%
+                        } %>
+                    </tr><%
+                }); %></table></td>
+                <%
+            } %></tr><%
+        });
+        %>
+        </table>
         <div id="criar" class="div_criar">
             <span><a href="#add_tab">+</a></span>
         </div>
@@ -55,11 +70,11 @@
                     <tr>
                         <td>Tipo do compasso:</td>
                         <td><select name="tipo_compass" id="tipo_compass">
-                            <option value="tipo1">2/4</option>
-                            <option value="tipo2">3/4</option>
-                            <option value="tipo3" selected>4/4</option>
-                            <option value="tipo4">5/4</option>
-                            <option value="tipo5">7/8</option>
+                            <option value="2">2/4</option>
+                            <option value="3">3/4</option>
+                            <option value="4" selected>4/4</option>
+                            <option value="5">5/4</option>
+                            <option value="7">7/8</option>
                         </select></td>
                     </tr>
                     <tr>
@@ -69,22 +84,22 @@
                     <tr>
                         <td>Batidas por tempo:</td>
                         <td><select name="beat_temp" id="beat_temp">
-                            <option value="_1">01</option>
-                            <option value="_2">02</option>
-                            <option value="_3">03</option>
-                            <option value="_4" selected>04</option>
-                            <option value="_5">05</option>
-                            <option value="_6">06</option>
-                            <option value="_7">07</option>
-                            <option value="_8">08</option>
-                            <option value="_9">09</option>
-                            <option value="_10">10</option>
-                            <option value="_11">11</option>
-                            <option value="_12">12</option>
-                            <option value="_13">13</option>
-                            <option value="_14">14</option>
-                            <option value="_15">15</option>
-                            <option value="_16">16</option>
+                            <option value="1">01</option>
+                            <option value="2">02</option>
+                            <option value="3">03</option>
+                            <option value="4" selected>04</option>
+                            <option value="5">05</option>
+                            <option value="6">06</option>
+                            <option value="7">07</option>
+                            <option value="8">08</option>
+                            <option value="9">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
                         </select></td>
                     </tr>
                     <tr>
