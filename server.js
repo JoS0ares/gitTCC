@@ -17,7 +17,7 @@ MongoClient.connect(uri, (err, client)=>{
     db = client.db('TCC');
 
     app.listen(3000, '192.168.100.8', function(){
-        console.log("server rodando em http://192.168.100.8:3000/espec_publicacao ou http://192.168.100.8:3000/criar_publicacao/rudimentos%20importantes/5f8b4c11228e5926704ef031 para realizar testes");
+        console.log("server rodando em http://192.168.100.8:3000/espec_publicacao ou http://192.168.100.8:3000/criar_publicacao/rudimentos/5f90dc9c16597e1d183bf0e8 para realizar testes");
     });
 });
 
@@ -30,16 +30,12 @@ app.get('/espec_publicacao', (req,res)=>{
     res.render('espec_publicacao.ejs');
 });
 app.get('/criar_publicacao/:name/:id', (req,res)=>{
-    console.dir(req.params);
     db.collection('publicacao').find({_id: ObjectId(req.params.id)}).toArray((err,results)=>{
         let dado = results[0];
 
         db.collection('tablatura').find({_id: ObjectId(dado.tablatura_id)}).toArray((errs,result)=>{
             let tab = result[0];
             res.render('criar_publicacao.ejs', {document: dado,tablatura: tab});
-            console.dir(dado);
-            console.dir(tab);
-            console.dir(tab._trechos);
         });
     });
 });
@@ -56,7 +52,6 @@ app.post('/criar_public', (req,res) => {
             res.redirect('back');
             console.log(err);
         }
-        console.log(tablatura);
     });
 
     let dados = req.body;
@@ -69,45 +64,78 @@ app.post('/criar_public', (req,res) => {
             console.log(err);
         }
         res.redirect('/criar_publicacao/' + dados.nome_public + '/' + dados._id);
-        console.log(dados);
     });
 });
 
 app.post('/novo_trecho/:id_tabela', (req,res) => {
-    console.dir(req.params);
-    console.dir(req.body);
-
-
-
     db.collection('tablatura').find({_id: ObjectId(req.params.id_tabela)}).toArray((err,results)=>{
-        console.dir(results);
         let trechos = results[0]._trechos;
         let dados = req.body;
-        console.dir(trechos);
-
+        let compassos = new Array(+dados.quant_compass);
         let linhas = new Array(+dados.num_row);
         
         for(var i = 0;i < linhas.length;i+=1){
             let obj = {
-                nome_linha: String("linha " + i),
+                id_linha: i,
                 colunas: new Array(+dados.beat_temp*+dados.tipo_compass)
             };
             linhas[i] = obj;
-            console.dir(linhas[i]);
-        };
+        }
+
+        for(var i = 0;i < compassos.length;i+=1) {
+            let obj = {
+                id_compasso: i,
+                linhas: linhas
+            }
+            compassos[i] = obj;
+        }
+
+        // trechos.forEach()
 
         trechos.push({
             nome: dados.detalhe_nome,
             compass: +dados.tipo_compass,
             quant_compass: +dados.quant_compass,
             beat_temp: +dados.beat_temp,
-            linhas: linhas
+            compassos: compassos
         });
 
         db.collection('tablatura').updateOne({_id: ObjectId(req.params.id_tabela)},
             {
                 $set: {
                     _trechos: trechos
+                }
+            }, (err, result) => {
+                if (err) return res.send(err);
+                res.redirect('back');
+            }
+        );
+    });
+});
+
+app.post('/opa',(req,res)=>{
+    console.dir(req.body);
+});
+
+app.get('/delete_trecho/:id_tabela/:nome_trecho', (req,res)=>{
+    console.dir('//delete_trecho');
+    let dados_pag = req.params;
+
+    db.collection('tablatura').find({_id: ObjectId(dados_pag.id_tabela)}).toArray((err, result)=>{
+        let valores = result[0];
+        let cont = 0;
+
+        valores._trechos.forEach(element => {
+            if(element.nome == dados_pag.nome_trecho) {
+                valores._trechos.splice(cont,1);
+            }
+            cont++
+        });
+
+        db.collection('tablatura').updateOne({_id: ObjectId(req.params.id_tabela)},
+            {
+                $set: {
+                    _trechos: valores._trechos
                 }
             }, (err, result) => {
                 if (err) return res.send(err);

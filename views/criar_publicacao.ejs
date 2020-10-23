@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar publicacao</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <style>
     * {
@@ -13,8 +14,10 @@
     .modal {
         opacity: 0;
         pointer-events: none;
+        display: none;
     }
     .modal:target {
+        display: block;
         opacity: 1;
         pointer-events: auto;
     }
@@ -29,31 +32,76 @@
             <h1><%= document.nome_public %></h1>
             <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
         </p>
-        <table>
-        <% tablatura._trechos.forEach(element => {
-            %><tr><th><%= element.nome; %></th><% for(var i = 0;i < element.quant_compass;i++) {
-                %>
-                <td><table><% element.linhas.forEach(element1 => {
-                    
-                    %><tr>
-                        <% for(var j = 0;j < element1.colunas.length;j++) {
-
-                            %><td><input type="checkbox" id="check<%= j %>"></td><%
-                        } %>
-                    </tr><%
-                }); %></table></td>
+        <%
+        tablatura._trechos.forEach(e => {
+        %>
+        <div id="confirmar_delete<%=e.nome%>" class="modal">
+            <div>
+                <a href="#fechar" title="fechar" class="fechar">X</a>
+                <h2>Deseja mesmo deletar este trecho?</h2>
+                <a href="/delete_trecho/<%=tablatura._id%>/<%=e.nome%>">confirmar</a>
+            </div>
+        </div>
+        <table id="p_<%=e.nome%>">
+            <tr><td><h3><%=e.nome%></h3></td></tr>
+            <tr><td><a href="#confirmar_delete<%=e.nome%>">Delete</a></td></tr>
+            <tr>
                 <%
-            } %></tr><%
+                e.compassos.forEach(element1 => {
+                %>
+                <td>
+                    <table id="<%=element1.nome_compasso%>">
+                        <tr id="linha cabeçalho">
+                            <%
+                            let tamanho = (e.compass*e.beat_temp);
+                            let cont = 0;
+                            for(var i = 0;i < tamanho;i++) {
+                                if((i%e.beat_temp)==0) {
+                                    cont++
+                                %>
+                                <td>
+                                    <h4><%=cont%></h4>
+                                </td>
+                                <%
+                                }
+                                else {
+                                %>
+                                <td></td>
+                                <%
+                                }
+                            }
+                            %>
+                        </tr>
+                        <%
+                        element1.linhas.forEach(element2 => {
+                        %>
+                        <tr id="<%=element2.nome_linha%>">
+                            <%
+                            let k = 0;
+                            element2.colunas.forEach(element3 => {
+                            %>
+                            <td><input type="checkbox" id="<%=element2.id_linha%>_<%=k%>"></td>
+                            <%
+                            k++
+                            });
+                            %>
+                        </tr>
+                        <%
+                        });
+                        %>
+                    </table>
+                </td>
+                <%
+                });
+                %>
+            </tr>
+        </table>
+        <%
         });
         %>
-        </table>
         <div id="criar" class="div_criar">
             <span><a href="#add_tab">+</a></span>
         </div>
-
-
-
-        
     </main>
 
 
@@ -115,10 +163,18 @@
         <div>
             <a href="#fechar" title="fechar" class="fechar">X</a>
             <h2>Deseja mesmo sair?</h2>
-            <p>Voltar irá excluir todo o seu progresso nesta página.</p>
+            <p>Voltar irá excluir todo o seu progresso não salvo nesta página.</p>
             <p><button>Cancelar</button><button>Sim</button></p>
         </div>
     </div>
     <footer></footer>
+    <button id="btn1">opa!</button>
+<script>
+$("#btn1").click(function(){
+    $.post('/opa',{
+        a: "opa",b: "bom dia!"
+    })
+})
+</script>
 </body>
 </html>
