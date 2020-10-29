@@ -3,12 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUDZADA</title>
+    <title>Pagina inicial</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
 <body>
-    <form action="/hyundai" method="get">
-        <input type="text" name="inp" id="inp">
-        <button type="submit">Enviar</button>
-    </form>
+    <header>
+        
+        <ul>
+            <li><a href="/espec_publicacao">Criar publicação</a></li>
+            <li><a href="">login</a></li>
+            <li><a href="">Register</a></li>
+        </ul>
+    </header>
+    <main>
+
+        <table>
+            <tbody>
+                <%
+                dados.forEach(e => {
+                %>
+                <tr>
+                    <table onclick="irpara('<%= e.nome_public%>','<%= e._id%>');">
+                        <tbody>
+                            <tr>
+                                <td><h3><%= e.nome_public%></h3></td>
+                                <td><h4><%= e.bpm_table%></h4></td>
+                            </tr>
+                            <tr>
+                                <td><h4><%= e.nome_banda%></h4></td>
+                                <td><h4><%= e.desc_adicional%></h4></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tr>
+                <%
+                });
+                %>
+            </tbody>
+        </table>
+
+    </main>
+    <footer></footer>
+<script>
+    function irpara(nome,id) {
+        window.location.href = ('/view_publicacao/'+nome+'/'+id);
+    }
+</script>
 </body>
 </html>

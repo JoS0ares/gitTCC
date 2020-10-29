@@ -1,0 +1,44 @@
+// tablatura._trechos.forEach(e => {
+            //     e.compassos.forEach(e1 => {
+            //         e1.linhas.forEach(e2 => {
+            //             for(var i = 0; i < e2.colunas.length;i++) {
+            //                 %>
+            //                 $('#<%=e.nome%>_<%=e1.id_compasso%>_<%=e2.id_linha%>_<%=i%>').click(()=>{
+
+            //                     let pg_trechos = new Array(<%=tablatura._trechos.length%>)
+            //                     let obj,obj1,obj2;
+            //                     for(var k = 0;k < pg_trechos.length;k++){
+            //                         obj = {
+            //                             nome: '<%=e.nome%>',
+            //                             compass: <%=e.compass%>,
+            //                             quant_compass: <%=e.quant_compass%>,
+            //                             beat_temp: <%=e.beat_temp%>,
+            //                             compassos: new Array(<%=e.compassos.length%>)
+            //                         }
+            //                         for(var l = 0; l < obj.compassos.length;l++){
+            //                             obj1 = {
+            //                                 id_compasso: <%=e1.id_compasso%>,
+            //                                 linhas: new Array(<%=e1.linhas.length%>)
+            //                             }
+            //                             for(var h = 0; h < obj1.linhas.length;h++){
+            //                                 obj2 = {
+            //                                     id_linha: <%=e2.id_linha%>,
+            //                                     colunas: new Array(<%=e2.colunas.length%>)
+            //                                 }
+            //                                 for(var j = 0; j < obj2.colunas.length;j++){
+            //                                     obj2.colunas[j] = $('#<%=e.nome%>_<%=e1.id_compasso%>_<%=e2.id_linha%>_<%=i%> option:selected').val();
+            //                                     console.log(obj2.colunas[j]);
+            //                                 }
+            //                                 obj1.linhas[h] = obj2
+            //                             }
+            //                             obj.compassos[l] = obj1
+            //                         }
+            //                         pg_trechos[k] = obj
+            //                     }
+            //                     console.log(pg_trechos);
+            //                 })
+            //                 <%
+            //             }
+            //         });
+            //     });
+            // });

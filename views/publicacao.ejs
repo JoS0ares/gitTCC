@@ -5,7 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicação</title>
 </head>
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+    .modal {
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+    }
+    .modal:target {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
 <body>
-    
+    <header>
+        <a href="#deseja_voltar">Home</a>
+        <p>
+            <h1><%= document.nome_public %></h1>
+            <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
+        </p>
+    </header>
+
+    <main>
+        <%
+        tablatura._trechos.forEach(e => {
+        %>
+        <table id="p_<%=e.nome%>">
+            <thead>
+                <tr><td><h3><%=e.nome%></h3></td></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <%
+                    e.compassos.forEach(element1 => {
+                    %>
+                    <td>
+                        <table id="<%=element1.id_compasso%>">
+                            <tbody>
+                                <tr id="linha cabeçalho">
+                                    <%
+                                    let tamanho = (e.compass*e.beat_temp);
+                                    let cont = 0;
+                                    for(var i = 0;i < tamanho;i++) {
+                                        if((i%e.beat_temp)==0) {
+                                            cont++
+                                        %>
+                                        <td>
+                                            <h4><%=cont%></h4>
+                                        </td>
+                                        <%
+                                        }
+                                        else {
+                                        %>
+                                        <td></td>
+                                        <%
+                                        }
+                                    }
+                                    %>
+                                </tr>
+                                <%
+                                element1.linhas.forEach(element2 => {
+                                %>
+                                <tr id="<%=element2.id_linha%>">
+                                    <%
+                                    let k = 0;
+                                    element2.colunas.forEach(element3 => {
+                                    %>
+                                    <td>
+                                        <h5><%=element3%></h5>
+                                    </td>
+                                    <%
+                                    k++
+                                    });
+                                    %>
+                                </tr>
+                                <%
+                                });
+                                %>
+                            </tbody>
+                        </table>
+                    </td>
+                    <%
+                    });
+                    %>
+                </tr>
+            </tbody>
+        </table>
+        <%
+        });
+        %>
+    </main>
+    <div id="deseja_voltar" class="modal">
+        <div>
+            <a href="#fechar" title="fechar" class="fechar">X</a>
+            <h2>Deseja mesmo sair?</h2>
+            <p>Sair irá excluir todo o seu progresso não salvo nesta página.</p>
+            <p><button onclick="window.location.href = '/home'">Sim</button></p>
+        </div>
+    </div>
 </body>
 </html>
