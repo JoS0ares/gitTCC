@@ -6,6 +6,16 @@ const uri = "mongodb+srv://JoS0ares:esfigmomanometro@tcc.sd9zw.gcp.mongodb.net/T
 const ejs = require('ejs');
 const { json } = require('body-parser');
 const { ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+const testPass = '123456';
+const salt = bcrypt.genSaltSync(saltRounds);
+const hash = bcrypt.hashSync(testPass,salt);
+console.dir(salt);
+console.dir(hash);
+
+
 var db;
 
 app.use(bodyParser.urlencoded());
@@ -147,19 +157,22 @@ app.post('/novo_trecho/:id_tabela', (req,res) => {
 });
 
 app.post('/update_trecho', (req,res) => {
-    trechos = req.body.trechos;
-    console.log(trechos);
-    db.collection('tablatura').updateOne({_id: ObjectId(req.body.id_tabela)},
-        {
-            $set: {
-                _trechos: trechos
+    if(trechos!=null){
+        trechos = req.body.trechos;
+        db.collection('tablatura').updateOne({_id: ObjectId(req.body.id_tabela)},
+            {
+                $set: {
+                    _trechos: trechos
+                }
+            }, (err, result) => {
+                if (err) return res.send(err);
+                res.redirect('back');
+                console.dir(trechos);
             }
-        }, (err, result) => {
-            if (err) return res.send(err);
-            res.redirect('back');
-            console.dir(trechos);
-        }
-    );
+        );
+    }
+    console.log(trechos);
+    
 });
 
 app.get('/delete_trecho/:id_tabela/:nome_trecho', (req,res)=>{
