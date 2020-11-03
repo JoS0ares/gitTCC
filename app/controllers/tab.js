@@ -2,12 +2,30 @@ const { application } = require("express");
 const { ObjectID } = require("mongodb");
 
 module.exports.criarTrecho = (application,req,res)=>{
+
     let connection = application.config.dbConnection.dbConnection();
     let bancoModel = new application.app.models.banco(connection);
 
     bancoModel.criarTrecho(ObjectID(req.params.id_tabela) ,req.body, (err,result)=>{
         if (err) return err;
         res.redirect('back');
+    });
+}
+module.exports.especTab = (application,req,res,erros) => {
+    let connection = application.config.dbConnection.dbConnection();
+    let bancoModel = new application.app.models.banco(connection);
+
+    bancoModel.getPublic(ObjectID(req.params.id), (err,result)=>{
+        if (err) return err;
+        dado = result[0];
+        console.dir(dado);
+
+        bancoModel.getTab(ObjectID(dado.tab_id),(err,result)=>{
+            if (err) return err;
+            let tab = result[0];
+
+            res.render('espec_tablatura.ejs', {document: dado,tablatura: tab,validar: erros});
+        });
     });
 }
 module.exports.updateTrecho = (application,req,res)=>{

@@ -213,6 +213,23 @@
     <div id="add_tab" class="modal">
         <div>
             <a href="#fechar" title="fechar" class="fechar">X</a>
+            <%
+            if(validar) {
+            %>
+            <div>
+                <ul>
+                    <%
+                    validar.forEach(e => {
+                    %>
+                    <li><%=e.msg%></li>
+                    <%
+                    })
+                    %>
+                </ul>
+            </div>
+            <%
+            }
+            %>
             <form action="/novo_trecho/<%= document.tab_id %>" method="post" id="novo_trecho">
                 <h2>Detalhes do techo</h2>
                 <table>
@@ -231,7 +248,7 @@
                         </select></td>
                     </tr>
                     <tr>
-                        <td>Quantidade de compassos (menor que 12):</td>
+                        <td>Quantidade de compassos (menor que ?):</td>
                         <td><input type="number" name="quant_compass" id="quant_compass"></td>
                     </tr>
                     <tr>

@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar publicacao</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <body>
     <main>
-        <form action="/criar_public" method="post">
+        
+        
+        <form action="/criar_public" method="post" id="formP">
             <table>
                 <tr>
                     <td>Nome da publicação</td>
@@ -32,5 +35,15 @@
             </p>
         </form>
     </main>
+<script>
+    $('#formP').submit(e=>{
+        $.post("/criar_public",{
+            nome_public: $('#nome_public').val(),
+            nome_banda: $('#nome_banda').val(),
+            bpm_table: $('#bpm_table').val(),
+            desc_adicional: $('#desc_adicional').val()
+        });
+    })
+</script>
 </body>
 </html>

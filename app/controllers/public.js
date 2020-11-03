@@ -20,22 +20,6 @@ module.exports.viewPublic = (application,req,res)=>{
 module.exports.especPublic = (application,req,res)=>{
     res.render('espec_publicacao.ejs');
 }
-module.exports.especTab = (application,req,res) => {
-    let connection = application.config.dbConnection.dbConnection();
-    let bancoModel = new application.app.models.banco(connection);
-
-    bancoModel.getPublic(ObjectID(req.params.id), (err,result)=>{
-        if (err) return err;
-        let dado = result[0];
-
-        bancoModel.getTab(ObjectID(dado.tab_id),(err,result)=>{
-            if (err) return err;
-            let tab = result[0];
-
-            res.render('espec_tablatura.ejs', {document: dado,tablatura: tab});
-        });
-    });
-}
 module.exports.criarPublic = (application,req,res)=>{
     let connection = application.config.dbConnection.dbConnection();
     let bancoModel = new application.app.models.banco(connection);
