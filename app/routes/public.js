@@ -12,7 +12,6 @@ module.exports = (application)=>{
     // post
 
     application.post('/criar_public', (req,res) => {
-        const erros = validationResult(req).errors;
         return application.app.controllers.public.criarPublic(application,req,res);
     });
     

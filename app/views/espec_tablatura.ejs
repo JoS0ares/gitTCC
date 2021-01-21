@@ -90,10 +90,8 @@
                                             <option value="X">X</option>
                                             <option value="O">O</option>
                                             <option value="K">K</option>
-                                            <option value="R">R</option>
-                                            <option value="L">L</option>
-                                            <option value="RL">RL</option>
-                                            <option value="LR">LR</option>
+                                            <option value="R">FL</option>
+                                            <option value="L">DD</option>
                                             <option value="-" selected>-</option>
                                         </select>
                                     </td>
@@ -117,59 +115,6 @@
         <%
         });
         %>
-        <script>
-            window.onload = ()=>{
-                atualisar();
-            }
-            function atualisar() {
-                let pg_trechos = new Array(<%=tablatura._trechos.length%>)
-                let table_trecho = <%- JSON.stringify(tablatura._trechos) %>
-                let select_public = '<%- JSON.stringify(document.public) %>';
-                for(var i = 0;i < pg_trechos.length;i++) {
-                    let compassos = table_trecho[i].compassos
-                    for(var j = 0;j < compassos.length;j++) {
-                        let linhas = compassos[j].linhas;
-                        for(var k = 0;k < linhas.length;k++) {
-                            let colunas = linhas[k].colunas;
-                            for(var l = 0;l < colunas.length;l++) {
-                                let option = $('#'+table_trecho[i].nome+'_'+j+'_'+k+'_'+l+' option[value='+colunas[l]+']');
-                                if(option.val()==colunas[l]){
-                                    option.prop('selected','true');
-                                }
-                                else {
-                                    option.prop('selected','false');
-                                }
-                            }
-                        }
-                    }
-                }
-                if(select_public!=$('#public option:selected').val()) $('#public option[value="'+select_public+'"]').prop('selected','true');
-            }
-
-            function select_salvar() {
-                let pg_trechos = new Array(<%=tablatura._trechos.length%>)
-                let table_trecho = <%- JSON.stringify(tablatura._trechos) %>
-                for(var i = 0;i < pg_trechos.length;i++) {
-                    let compassos = table_trecho[i].compassos
-                    for(var j = 0;j < compassos.length;j++) {
-                        let linhas = compassos[j].linhas;
-                        for(var k = 0;k < linhas.length;k++) {
-                            let colunas = linhas[k].colunas;
-                            for(var l = 0;l < colunas.length;l++) {
-                                colunas[l] = $('#'+table_trecho[i].nome+'_'+j+'_'+k+'_'+l+' option:selected').val();
-                            }
-                            linhas[k].colunas = colunas;
-                        }
-                        compassos[j].linhas = linhas;
-                    }
-                    table_trecho[i].compassos = compassos;
-                }
-                $.post('/update_trecho',{
-                    trechos: table_trecho,
-                    id_tabela: <%- JSON.stringify(tablatura._id)%>
-                })
-            }
-        </script>
         <div id="criar" class="div_criar">
             <span><a href="#add_tab">+</a></span>
         </div>
@@ -177,29 +122,29 @@
 
     <div id="publicar" class="modal">
         <a href="#fechar" title="fechar" class="fechar">X</a>
-        <form action="/update_publicacao/<%=document._id%>" method="post">
+        <form id="update_publicacao" action="/update_publicacao/<%=document._id%>" method="post">
             <table>
                 <tbody>
                     <tr>
                         <th>Nome da publicação:</th>
-                        <td><input type="text" name="nome_public" id="nome_public" value="<%=document.nome_public%>"></td>
+                        <td><input type="text" class="required" name="nome_public" id="nome_public" value="<%=document.nome_public%>"></td>
                     </tr>
                     <tr>
                         <th>Nome da banda:</th>
-                        <td><input type="text" name="nome_banda" id="nome_banda" value="<%=document.nome_banda%>"></td>
+                        <td><input type="text" class="required" name="nome_banda" id="nome_banda" value="<%=document.nome_banda%>"></td>
                     </tr>
                     <tr>
                         <th>BPM:</th>
-                        <td><input type="number" name="bpm_table" id="bpm_table" value="<%=document.bpm_table%>"></td>
+                        <td><input type="number" class="required" name="bpm_table" id="bpm_table" value="<%=document.bpm_table%>"></td>
                     </tr>
                     <tr>
                         <th>Descrição adicional (opcional):</th>
-                        <td><textarea name="desc_adicional" id="desc_adicional" cols="30" rows="10"><%=document.desc_adicional%></textarea></td>
+                        <td><textarea name="desc_adicional" class="required" id="desc_adicional" cols="30" rows="10"><%=document.desc_adicional%></textarea></td>
                     </tr>
                     <tr>
                         <th>Public:</th>
                         <td>
-                            <select name="public" id="public">
+                            <select name="public" class="required" id="public">
                                 <option value="true">True</option>
                                 <option value="false">False</option>
                             </select>
@@ -207,39 +152,22 @@
                     </tr>
                 </tbody>
             </table>
-            <p><button type="submit" onclick="select_salvar();">Guardar dados</button></p>
+            <p><button type="button">Guardar dados</button></p>
         </form>
     </div>
     <div id="add_tab" class="modal">
         <div>
             <a href="#fechar" title="fechar" class="fechar">X</a>
-            <%
-            if(validar) {
-            %>
-            <div>
-                <ul>
-                    <%
-                    validar.forEach(e => {
-                    %>
-                    <li><%=e.msg%></li>
-                    <%
-                    })
-                    %>
-                </ul>
-            </div>
-            <%
-            }
-            %>
             <form action="/novo_trecho/<%= document.tab_id %>" method="post" id="novo_trecho">
                 <h2>Detalhes do techo</h2>
                 <table>
                     <tr>
                         <td>Nome do trecho (sem espaços):</td>
-                        <td><input type="text" name="detalhe_nome" id="detalhe_nome" placeholder="ex: verso1, ponte, solo, etc."></td>
+                        <td><input type="text" name="detalhe_nome" id="detalhe_nome" class="required" placeholder="ex: verso1, ponte, solo, etc."></td>
                     </tr>
                     <tr>
                         <td>Tipo do compasso:</td>
-                        <td><select name="tipo_compass" id="tipo_compass">
+                        <td><select name="tipo_compass" id="tipo_compass" class="required">
                             <option value="2">2/4</option>
                             <option value="3">3/4</option>
                             <option value="4" selected>4/4</option>
@@ -248,12 +176,12 @@
                         </select></td>
                     </tr>
                     <tr>
-                        <td>Quantidade de compassos (menor que ?):</td>
-                        <td><input type="number" name="quant_compass" id="quant_compass"></td>
+                        <td>Quantidade de compassos (menor que 4):</td>
+                        <td><input type="number" name="quant_compass" id="quant_compass" class="required"></td>
                     </tr>
                     <tr>
                         <td>Batidas por tempo:</td>
-                        <td><select name="beat_temp" id="beat_temp">
+                        <td><select name="beat_temp" id="beat_temp" class="required">
                             <option value="1">01</option>
                             <option value="2">02</option>
                             <option value="3">03</option>
@@ -262,22 +190,14 @@
                             <option value="6">06</option>
                             <option value="7">07</option>
                             <option value="8">08</option>
-                            <option value="9">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
                         </select></td>
                     </tr>
                     <tr>
-                        <td>numero de linhas (menor que 12):</td>
-                        <td><input type="number" name="num_row" id="num_row"></td>
+                        <td>numero de linhas (menor que 8):</td>
+                        <td><input type="number" name="num_row" id="num_row" class="required"></td>
                     </tr>
                 </table>
-                <p><button type="reset">Cancelar</button><button type="submit">Concluir</button></p>
+                <p><button type="reset">Cancelar</button><button type="button">Concluir</button></p>
             </form>
         </div>
     </div>
@@ -290,5 +210,85 @@
         </div>
     </div>
     <footer></footer>
+<script>
+
+    function check(forms) {
+        let inputs = $(forms + ' .required');
+        var len = inputs.length;
+        var valid = true;
+        console.dir(inputs);
+        for(var i = 0; i < len; i++) {
+            console.log(inputs[i].value)
+            if (!inputs[i].value) valid = false;
+        }
+        if(!valid) return false;
+        else return true;
+    }
+
+    $('#update_publicacao button[type="button"]').click(()=>{
+        if(check('#update_publicacao')) {select_salvar();document.getElementById("update_publicacao").submit()}
+
+        else return alert('nope');
+    })
+
+    $('#novo_trecho button[type="button"]').click(()=>{
+        if(check('#novo_trecho')) return document.getElementById("novo_trecho").submit();
+        
+        else return alert('nope')
+    })
+
+
+    window.onload = ()=>{
+        atualisar();
+    }
+    function atualisar() {
+        let pg_trechos = new Array(<%=tablatura._trechos.length%>)
+        let table_trecho = <%- JSON.stringify(tablatura._trechos) %>
+        let select_public = '<%- JSON.stringify(document.public) %>';
+        for(var i = 0;i < pg_trechos.length;i++) {
+            let compassos = table_trecho[i].compassos
+            for(var j = 0;j < compassos.length;j++) {
+                let linhas = compassos[j].linhas;
+                for(var k = 0;k < linhas.length;k++) {
+                    let colunas = linhas[k].colunas;
+                    for(var l = 0;l < colunas.length;l++) {
+                        let option = $('#'+table_trecho[i].nome+'_'+j+'_'+k+'_'+l+' option[value='+colunas[l]+']');
+                        if(option.val()==colunas[l]){
+                            option.prop('selected','true');
+                        }
+                        else {
+                            option.prop('selected','false');
+                        }
+                    }
+                }
+            }
+        }
+        if(select_public!=$('#public option:selected').val()) $('#public option[value="'+select_public+'"]').prop('selected','true');
+    }
+
+    function select_salvar() {
+        let pg_trechos = new Array(<%=tablatura._trechos.length%>)
+        let table_trecho = <%- JSON.stringify(tablatura._trechos) %>
+        for(var i = 0;i < pg_trechos.length;i++) {
+            let compassos = table_trecho[i].compassos
+            for(var j = 0;j < compassos.length;j++) {
+                let linhas = compassos[j].linhas;
+                for(var k = 0;k < linhas.length;k++) {
+                    let colunas = linhas[k].colunas;
+                    for(var l = 0;l < colunas.length;l++) {
+                        colunas[l] = $('#'+table_trecho[i].nome+'_'+j+'_'+k+'_'+l+' option:selected').val();
+                    }
+                    linhas[k].colunas = colunas;
+                }
+                compassos[j].linhas = linhas;
+            }
+            table_trecho[i].compassos = compassos;
+        }
+        $.post('/update_trecho',{
+            trechos: table_trecho,
+            id_tabela: <%- JSON.stringify(tablatura._id)%>
+        })
+    }
+</script>
 </body>
 </html>

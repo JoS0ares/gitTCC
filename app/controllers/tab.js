@@ -6,12 +6,12 @@ module.exports.criarTrecho = (application,req,res)=>{
     let connection = application.config.dbConnection.dbConnection();
     let bancoModel = new application.app.models.banco(connection);
 
-    bancoModel.criarTrecho(ObjectID(req.params.id_tabela) ,req.body, (err,result)=>{
+    bancoModel.criarTrecho(ObjectID(req.params.id) ,req.body, (err,result)=>{
         if (err) return err;
         res.redirect('back');
     });
 }
-module.exports.especTab = (application,req,res,erros) => {
+module.exports.especTab = (application,req,res) => {
     let connection = application.config.dbConnection.dbConnection();
     let bancoModel = new application.app.models.banco(connection);
 
@@ -24,7 +24,7 @@ module.exports.especTab = (application,req,res,erros) => {
             if (err) return err;
             let tab = result[0];
 
-            res.render('espec_tablatura.ejs', {document: dado,tablatura: tab,validar: erros});
+            res.render('espec_tablatura.ejs', {document: dado,tablatura: tab});
         });
     });
 }
