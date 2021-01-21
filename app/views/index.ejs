@@ -14,7 +14,12 @@
 </style>
 <body>
     <header>
-        <input type="search" name="search_public" id="search_public">
+        <form action="/pesquisa" method="get">
+            <div role="group">
+                <input type="text" name="q">
+                <button type="submit">Pesquisar</button>
+            </div>
+        </form>
         <ul>
             <li><a href="/espec_publicacao">Criar publicação</a></li>
             <li><a href="">login</a></li>

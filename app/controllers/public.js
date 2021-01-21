@@ -38,6 +38,11 @@ module.exports.criarPublic = (application,req,res)=>{
         dados.data_public = new Date();
         dados.tab_id = tab._id;
         dados.public = false;
+
+        bancoModel.criarTags(dados, results=>{
+            console.log(results);
+            dados.tags = results;
+        });
         
         bancoModel.criarPublic(dados,(err,result)=>{
             if (err) {

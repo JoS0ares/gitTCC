@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa</title>
+</head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+    .modal {
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+    }
+    .modal:target {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
+<body>
+    <header>
+        <a href="#deseja_voltar">Home</a>
+        <form action="" method="GET">
+            <div role="group">
+                <input type="text" name="q" id="q" value="<%= query %>">
+                <button type="submit">Pesquisar</button>
+            </div>
+        </form>
+    </header>
+    <main>
+        <table>
+            <tbody>
+                <%
+                dados.forEach(e => {
+                %>
+                <tr>
+                    <table onclick="irpara('<%= e.nome_public%>','<%= e._id%>');">
+                        <tbody>
+                            <tr>
+                                <td><h3><%= e.nome_public%></h3></td>
+                                <td><h4><%= e.bpm_table%></h4></td>
+                            </tr>
+                            <tr>
+                                <td><h4><%= e.nome_banda%></h4></td>
+                                <td><h4><%= e.desc_adicional%></h4></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tr>
+                <%
+                });
+                %>
+            </tbody>
+        </table>
+    </main>
+    <div id="deseja_voltar" class="modal">
+        <div>
+            <a href="#fechar" title="fechar" class="fechar">X</a>
+            <h2>Deseja mesmo sair?</h2>
+            <p>Sair irá excluir todo o seu progresso não salvo nesta página.</p>
+            <p><button onclick="window.location.href = '/home'">Sim</button></p>
+        </div>
+    </div>
+    <footer></footer>
+<script>
+    function irpara(nome,id) {
+        window.location.href = ('/view_publicacao/'+nome+'/'+id);
+    }
+</script>
+</body>
+</html>

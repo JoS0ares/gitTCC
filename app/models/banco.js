@@ -106,6 +106,20 @@ class Banco {
             );
         });
     }
+    criarTags(dados,callback) {
+        const regex = /[\s,\.;:\(\)\-']/;
+        let tags = new Array();
+
+        tags.push(...dados.nome_public.toUpperCase().split(regex));
+        tags.push(dados.bpm_table);
+
+        if(dados.nome_banda) tags = tags.concat(...dados.nome_banda.toUpperCase().split(regex));
+
+        return callback(tags);
+    }
+    pesquisarTags(tag,callback) {
+        this._connection.collection('publicacao').find({tags: {$all: tag}}).toArray(callback);
+    }
 }
 
 module.exports = () => {
