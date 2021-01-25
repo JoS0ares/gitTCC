@@ -118,7 +118,15 @@ class Banco {
         return callback(tags);
     }
     pesquisarTags(tag,callback) {
-        this._connection.collection('publicacao').find({tags: {$all: tag}}).toArray(callback);
+        var regex = new Array();
+
+        console.log(tag);
+        tag.forEach(e=>{
+            regex.push(new RegExp("("+e+")"));
+        })
+
+        console.log(regex);
+        this._connection.collection('publicacao').find({tags: {$all: regex}}).toArray(callback);
     }
 }
 
