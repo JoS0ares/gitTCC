@@ -18,5 +18,4 @@ module.exports = (application)=>{
     application.post('/update_publicacao/:id_public', (req,res) => {
         application.app.controllers.public.updatePublic(application,req,res);
     });
-
 }

@@ -5,6 +5,9 @@ class Banco {
     getAllPublicTrue(callback) {
         this._connection.collection('publicacao').find({public: true}).toArray(callback);
     }
+    getAllPublic(callback) {
+        this._connection.collection('publicacao').find().toArray(callback);
+    }
     getPublic(id,callback) {
         this._connection.collection('publicacao').find({_id: id}).toArray(callback);
     }
@@ -17,6 +20,9 @@ class Banco {
     criarTab(dados,callback) {
         this._connection.collection('tablatura').save(dados, callback);
     }
+    deleteTab(id,callback) {
+
+    }
     updatePublic(id,dados,callback) {
         this._connection.collection('publicacao').updateOne({_id: id},{
             $set: {
@@ -27,6 +33,9 @@ class Banco {
                 public: dados.public
             }
         },callback);
+    }
+    deletePublic(id,callback) {
+
     }
     criarTrecho(id,dados,callback) {
         this._connection.collection('tablatura').find({_id: id}).toArray((err,results)=>{

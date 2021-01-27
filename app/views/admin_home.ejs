@@ -4,10 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
 <body>
     <header>
-        
+        <ul>
+            <li><a href="">Publicações</a></li>
+            <li><a href="">Usuários</a></li>
+        </ul>     
     </header>
+    <main>
+        <section class="publicacoes">
+            <table>
+                <!-- colunas: nomePublic,nomeBanda,bpm table,dataPublic,idPublic,public -->
+                <thead>
+                    <tr>
+                        <td>Nome da publicação</td>
+                        <td>Nome da banda</td>
+                        <td>BPM</td>
+                        <td>Data de criação</td>
+                        <td>ID da publicação</td>
+                        <td>Pública</td>
+                        <td>Ações</td>
+                        <td>Delete</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    dados.forEach(e => {
+                    %>
+                    <tr>
+                        <td><h4><%= e.nome_public%></h4></td>
+                        <td><h4><%= e.nome_banda%></h4></td>
+                        <td><h4><%= e.bpm_table%></h4></td>
+                        <td><h4><%= e.data_public%></h4></td>
+                        <td><h4><%= e._id%></h4></td>
+                        <td><select name="public" class="required" id="public_<%=e._id%>">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                            <script>
+                                if(<%- e.public%>) $("#public_<%=e._id%> option[value='true']").attr('selected', 'true');
+                                else $("#public_<%=e._id%> option[value='false']").attr('selected', 'true');
+                            </script>
+                        </td>
+                        <td>
+                            <div>
+                                <a href="/espec_tablatura/<%= e.nome_public%>/<%= e._id%>">Edit</a>
+                                <a href="/view_publicacao/<%= e.nome_public%>/<%= e._id%>">View</a>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="delete_publicacao" id="<%= e._id%>">
+                        </td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                </tbody>
+            </table>
+        </section>
+        <section class="usuarios">
+
+        </section>
+    </main>
 </body>
 </html>
