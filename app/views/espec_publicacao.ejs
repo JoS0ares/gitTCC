@@ -6,37 +6,55 @@
     <title>Criar publicacao</title>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+<style>
+    #loading {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff;
+    }
+    #tudo {
+        display: none;
+    }
+</style>
 <body>
-    <main>
-        
-        
-        <form action="/criar_public" method="post" id="formP">
-            <table>
-                <tr>
-                    <td>Nome da publicação</td>
-                    <td><input type="text" name="nome_public" id="nome_public" placeholder="Escreva aqui"></td>
-                </tr>
-                <tr>
-                    <td>Nome da banda</td>
-                    <td><input type="text" name="nome_banda" id="nome_banda" value="Sem banda" placeholder="Escreva o nome da banda"></td>
-                </tr>
-                <tr>
-                    <td>BPM</td>
-                    <td><input type="number" name="bpm_table" id="bpm_table"></td>
-                </tr>
-                <tr>
-                    <td>Descrição adicional (opcional)</td>
-                    <td><textarea name="desc_adicional" id="desc_adicional" value="*" cols="30" rows="10"></textarea></td>
-                </tr>
-            </table>
-            <p>
-                <button type="reset">Cancelar</button>
-                <button type="submit">Enviar</button>
-            </p>
-        </form>
-    </main>
+    <div id="loading"></div>
+    <div id="tudo">
+        <main>
+            <form action="/criar_public" method="post" id="formP">
+                <table>
+                    <tr>
+                        <td>Nome da publicação</td>
+                        <td><input type="text" name="nome_public" id="nome_public" placeholder="Escreva aqui"></td>
+                    </tr>
+                    <tr>
+                        <td>Nome da banda</td>
+                        <td><input type="text" name="nome_banda" id="nome_banda" value="Sem banda" placeholder="Escreva o nome da banda"></td>
+                    </tr>
+                    <tr>
+                        <td>BPM</td>
+                        <td><input type="number" name="bpm_table" id="bpm_table"></td>
+                    </tr>
+                    <tr>
+                        <td>Descrição adicional (opcional)</td>
+                        <td><textarea name="desc_adicional" id="desc_adicional" value="*" cols="30" rows="10"></textarea></td>
+                    </tr>
+                </table>
+                <p>
+                    <button type="reset">Cancelar</button>
+                    <button type="submit">Enviar</button>
+                </p>
+            </form>
+        </main>
+    </div>
 <script>
-    
+    $(window).on('load',()=>{
+        $('#loading').fadeOut('slow');
+        $('#tudo').toggle('fast');
+    });
 </script>
 </body>
 </html>

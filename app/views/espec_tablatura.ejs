@@ -21,195 +21,210 @@
         opacity: 1;
         pointer-events: auto;
     }
+    #loading {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff;
+    }
+    #tudo {
+        display: none;
+    }
 </style>
 <body>
-    <header>
-        <a href="#deseja_voltar">Home</a>
-        <a href="#publicar">Salvar</a>
-        <p>
-            <h1><%= document.nome_public %></h1>
-            <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
-        </p>
-    </header>
-
-    <main>
-        <%
-        tablatura._trechos.forEach(e => {
-        %>
-        <div id="confirmar_delete<%=e.nome%>" class="modal">
-            <div>
-                <a href="#fechar" title="fechar" class="fechar">X</a>
-                <h2>Deseja mesmo deletar este trecho?</h2>
-                <a href="/delete_trecho/<%=tablatura._id%>/<%=e.nome%>">confirmar</a>
+    <div id="loading"></div>
+    <div id="tudo">
+        <header>
+            <a href="#deseja_voltar">Home</a>
+            <a href="#publicar">Salvar</a>
+            <p>
+                <h1><%= document.nome_public %></h1>
+                <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
+            </p>
+        </header>
+    
+        <main>
+            <%
+            tablatura._trechos.forEach(e => {
+            %>
+            <div id="confirmar_delete<%=e.nome%>" class="modal">
+                <div>
+                    <a href="#fechar" title="fechar" class="fechar">X</a>
+                    <h2>Deseja mesmo deletar este trecho?</h2>
+                    <a href="/delete_trecho/<%=tablatura._id%>/<%=e.nome%>">confirmar</a>
+                </div>
             </div>
-        </div>
-        <table id="p_<%=e.nome%>">
-            <thead>
-                <tr><td><h3><%=e.nome%></h3></td></tr>
-                <tr><td><a href="#confirmar_delete<%=e.nome%>">Delete</a></td></tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <%
-                    e.compassos.forEach(element1 => {
-                    %>
-                    <td>
-                        <table id="<%=element1.id_compasso%>">
-                            <tbody>
-                                <tr id="linha cabeçalho">
-                                    <%
-                                    let tamanho = (e.compass*e.beat_temp);
-                                    let cont = 0;
-                                    for(var i = 0;i < tamanho;i++) {
-                                        if((i%e.beat_temp)==0) {
-                                            cont++
-                                        %>
-                                        <td>
-                                            <h4><%=cont%></h4>
-                                        </td>
-                                        <%
-                                        }
-                                        else {
-                                        %>
-                                        <td></td>
-                                        <%
-                                        }
-                                    }
-                                    %>
-                                </tr>
-                                <%
-                                element1.linhas.forEach(element2 => {
-                                %>
-                                <tr id="<%=element2.id_linha%>">
-                                    <%
-                                    let k = 0;
-                                    element2.colunas.forEach(element3 => {
-                                    %>
-                                    <td>
-                                        <select id="<%=e.nome%>_<%=element1.id_compasso%>_<%=element2.id_linha%>_<%=k%>">
-                                            <option value="X">X</option>
-                                            <option value="O">O</option>
-                                            <option value="K">K</option>
-                                            <option value="R">FL</option>
-                                            <option value="L">DD</option>
-                                            <option value="-" selected>-</option>
-                                        </select>
-                                    </td>
-                                    <%
-                                    k++
-                                    });
-                                    %>
-                                </tr>
-                                <%
-                                });
-                                %>
-                            </tbody>
-                        </table>
-                    </td>
-                    <%
-                    });
-                    %>
-                </tr>
-            </tbody>
-        </table>
-        <%
-        });
-        %>
-        <div id="criar" class="div_criar">
-            <span><a href="#add_tab">+</a></span>
-        </div>
-    </main>
-
-    <div id="publicar" class="modal">
-        <a href="#fechar" title="fechar" class="fechar">X</a>
-        <form id="update_publicacao" action="/update_publicacao/<%=document._id%>" method="post">
-            <table>
+            <table id="p_<%=e.nome%>">
+                <thead>
+                    <tr><td><h3><%=e.nome%></h3></td></tr>
+                    <tr><td><a href="#confirmar_delete<%=e.nome%>">Delete</a></td></tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <th>Nome da publicação:</th>
-                        <td><input type="text" class="required" name="nome_public" id="nome_public" value="<%=document.nome_public%>"></td>
-                    </tr>
-                    <tr>
-                        <th>Nome da banda:</th>
-                        <td><input type="text" class="required" name="nome_banda" id="nome_banda" value="<%=document.nome_banda%>"></td>
-                    </tr>
-                    <tr>
-                        <th>BPM:</th>
-                        <td><input type="number" class="required" name="bpm_table" id="bpm_table" value="<%=document.bpm_table%>"></td>
-                    </tr>
-                    <tr>
-                        <th>Descrição adicional (opcional):</th>
-                        <td><textarea name="desc_adicional" class="required" id="desc_adicional" cols="30" rows="10"><%=document.desc_adicional%></textarea></td>
-                    </tr>
-                    <tr>
-                        <th>Public:</th>
+                        <%
+                        e.compassos.forEach(element1 => {
+                        %>
                         <td>
-                            <select name="public" class="required" id="public">
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                            </select>
+                            <table id="<%=element1.id_compasso%>">
+                                <tbody>
+                                    <tr id="linha cabeçalho">
+                                        <%
+                                        let tamanho = (e.compass*e.beat_temp);
+                                        let cont = 0;
+                                        for(var i = 0;i < tamanho;i++) {
+                                            if((i%e.beat_temp)==0) {
+                                                cont++
+                                            %>
+                                            <td>
+                                                <h4><%=cont%></h4>
+                                            </td>
+                                            <%
+                                            }
+                                            else {
+                                            %>
+                                            <td></td>
+                                            <%
+                                            }
+                                        }
+                                        %>
+                                    </tr>
+                                    <%
+                                    element1.linhas.forEach(element2 => {
+                                    %>
+                                    <tr id="<%=element2.id_linha%>">
+                                        <%
+                                        let k = 0;
+                                        element2.colunas.forEach(element3 => {
+                                        %>
+                                        <td>
+                                            <select id="<%=e.nome%>_<%=element1.id_compasso%>_<%=element2.id_linha%>_<%=k%>">
+                                                <option value="X">X</option>
+                                                <option value="O">O</option>
+                                                <option value="K">K</option>
+                                                <option value="R">FL</option>
+                                                <option value="L">DD</option>
+                                                <option value="-" selected>-</option>
+                                            </select>
+                                        </td>
+                                        <%
+                                        k++
+                                        });
+                                        %>
+                                    </tr>
+                                    <%
+                                    });
+                                    %>
+                                </tbody>
+                            </table>
                         </td>
+                        <%
+                        });
+                        %>
                     </tr>
                 </tbody>
             </table>
-            <p><button type="button">Guardar dados</button></p>
-        </form>
-    </div>
-    <div id="add_tab" class="modal">
-        <div>
+            <%
+            });
+            %>
+            <div id="criar" class="div_criar">
+                <span><a href="#add_tab">+</a></span>
+            </div>
+        </main>
+    
+        <div id="publicar" class="modal">
             <a href="#fechar" title="fechar" class="fechar">X</a>
-            <form action="/novo_trecho/<%= document.tab_id %>" method="post" id="novo_trecho">
-                <h2>Detalhes do techo</h2>
+            <form id="update_publicacao" action="/update_publicacao/<%=document._id%>" method="post">
                 <table>
-                    <tr>
-                        <td>Nome do trecho (sem espaços):</td>
-                        <td><input type="text" name="detalhe_nome" id="detalhe_nome" class="required" placeholder="ex: verso1, ponte, solo, etc."></td>
-                    </tr>
-                    <tr>
-                        <td>Tipo do compasso:</td>
-                        <td><select name="tipo_compass" id="tipo_compass" class="required">
-                            <option value="2">2/4</option>
-                            <option value="3">3/4</option>
-                            <option value="4" selected>4/4</option>
-                            <option value="5">5/4</option>
-                            <option value="7">7/8</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td>Quantidade de compassos (menor que 4):</td>
-                        <td><input type="number" name="quant_compass" id="quant_compass" class="required"></td>
-                    </tr>
-                    <tr>
-                        <td>Batidas por tempo:</td>
-                        <td><select name="beat_temp" id="beat_temp" class="required">
-                            <option value="1">01</option>
-                            <option value="2">02</option>
-                            <option value="3">03</option>
-                            <option value="4" selected>04</option>
-                            <option value="5">05</option>
-                            <option value="6">06</option>
-                            <option value="7">07</option>
-                            <option value="8">08</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td>numero de linhas (menor que 8):</td>
-                        <td><input type="number" name="num_row" id="num_row" class="required"></td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th>Nome da publicação:</th>
+                            <td><input type="text" class="required" name="nome_public" id="nome_public" value="<%=document.nome_public%>"></td>
+                        </tr>
+                        <tr>
+                            <th>Nome da banda:</th>
+                            <td><input type="text" class="required" name="nome_banda" id="nome_banda" value="<%=document.nome_banda%>"></td>
+                        </tr>
+                        <tr>
+                            <th>BPM:</th>
+                            <td><input type="number" class="required" name="bpm_table" id="bpm_table" value="<%=document.bpm_table%>"></td>
+                        </tr>
+                        <tr>
+                            <th>Descrição adicional (opcional):</th>
+                            <td><textarea name="desc_adicional" class="required" id="desc_adicional" cols="30" rows="10"><%=document.desc_adicional%></textarea></td>
+                        </tr>
+                        <tr>
+                            <th>Public:</th>
+                            <td>
+                                <select name="public" class="required" id="public">
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <p><button type="reset">Cancelar</button><button type="button">Concluir</button></p>
+                <p><button type="button">Guardar dados</button></p>
             </form>
         </div>
-    </div>
-    <div id="deseja_voltar" class="modal">
-        <div>
-            <a href="#fechar" title="fechar" class="fechar">X</a>
-            <h2>Deseja mesmo sair?</h2>
-            <p>Sair irá excluir todo o seu progresso não salvo nesta página.</p>
-            <p><button onclick="window.location.href = '/home'">Sim</button></p>
+        <div id="add_tab" class="modal">
+            <div>
+                <a href="#fechar" title="fechar" class="fechar">X</a>
+                <form action="/novo_trecho/<%= document.tab_id %>" method="post" id="novo_trecho">
+                    <h2>Detalhes do techo</h2>
+                    <table>
+                        <tr>
+                            <td>Nome do trecho (sem espaços):</td>
+                            <td><input type="text" name="detalhe_nome" id="detalhe_nome" class="required" placeholder="ex: verso1, ponte, solo, etc."></td>
+                        </tr>
+                        <tr>
+                            <td>Tipo do compasso:</td>
+                            <td><select name="tipo_compass" id="tipo_compass" class="required">
+                                <option value="2">2/4</option>
+                                <option value="3">3/4</option>
+                                <option value="4" selected>4/4</option>
+                                <option value="5">5/4</option>
+                                <option value="7">7/8</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <td>Quantidade de compassos (menor que 4):</td>
+                            <td><input type="number" name="quant_compass" id="quant_compass" class="required"></td>
+                        </tr>
+                        <tr>
+                            <td>Batidas por tempo:</td>
+                            <td><select name="beat_temp" id="beat_temp" class="required">
+                                <option value="1">01</option>
+                                <option value="2">02</option>
+                                <option value="3">03</option>
+                                <option value="4" selected>04</option>
+                                <option value="5">05</option>
+                                <option value="6">06</option>
+                                <option value="7">07</option>
+                                <option value="8">08</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <td>numero de linhas (menor que 8):</td>
+                            <td><input type="number" name="num_row" id="num_row" class="required"></td>
+                        </tr>
+                    </table>
+                    <p><button type="reset">Cancelar</button><button type="button">Concluir</button></p>
+                </form>
+            </div>
         </div>
+        <div id="deseja_voltar" class="modal">
+            <div>
+                <a href="#fechar" title="fechar" class="fechar">X</a>
+                <h2>Deseja mesmo sair?</h2>
+                <p>Sair irá excluir todo o seu progresso não salvo nesta página.</p>
+                <p><button onclick="window.location.href = '/home'">Sim</button></p>
+            </div>
+        </div>
+        <footer></footer>
     </div>
-    <footer></footer>
 <script>
 
     function check(forms) {
@@ -289,6 +304,11 @@
             id_tabela: <%- JSON.stringify(tablatura._id)%>
         })
     }
+
+    $(window).on('load',()=>{
+        $('#loading').fadeOut('slow');
+        $('#tudo').toggle('fast');
+    });
 </script>
 </body>
 </html>

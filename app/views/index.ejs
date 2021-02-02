@@ -11,54 +11,84 @@
         margin: 0px;
         padding: 0px;
     }
+    #loading {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff;
+    }
+    #tudo {
+        display: none;
+    }
 </style>
 <body>
-    <header>
-        <form action="/pesquisa" method="get">
-            <div role="group">
-                <input type="text" name="q">
-                <button type="submit">Pesquisar</button>
-            </div>
-        </form>
-        <ul>
-            <li><a href="/espec_publicacao">Criar publicação</a></li>
-            <li><a href="">login</a></li>
-            <li><a href="">Register</a></li>
-        </ul>
-    </header>
-    <main>
-
-        <table>
-            <tbody>
-                <%
-                dados.forEach(e => {
-                %>
-                <tr>
-                    <table onclick="irpara('<%= e.nome_public%>','<%= e._id%>');">
-                        <tbody>
-                            <tr>
-                                <td><h3><%= e.nome_public%></h3></td>
-                                <td><h4><%= e.bpm_table%></h4></td>
-                            </tr>
-                            <tr>
-                                <td><h4><%= e.nome_banda%></h4></td>
-                                <td><h4><%= e.desc_adicional%></h4></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </tr>
-                <%
-                });
-                %>
-            </tbody>
-        </table>
-
-    </main>
-    <footer></footer>
+    <div id="loading"></div>
+    <div id="tudo">
+        <header>
+            <form action="/pesquisa" method="get">
+                <div role="group">
+                    <input type="text" name="q">
+                    <button type="submit">Pesquisar</button>
+                </div>
+            </form>
+            <ul>
+                <li><a href="/espec_publicacao">Criar publicação</a></li>
+                <li><a href="">login</a></li>
+                <li><a href="">Register</a></li>
+            </ul>
+        </header>
+        <main>
+    
+            <table>
+                <tbody>
+                    <%
+                    for(var i = 0;i < dados.length;i++){
+                    %>
+                    <tr>
+                        <table onclick="irpara('<%= dados[i].nome_public%>','<%= dados[i]._id%>');">
+                            <tbody>
+                                <tr>
+                                    <td><h3><%= dados[i].nome_public%></h3></td>
+                                    <td><h4><%= dados[i].bpm_table%></h4></td>
+                                </tr>
+                                <tr>
+                                    <td><h4><%= dados[i].nome_banda%></h4></td>
+                                    <td><h4><%= dados[i].desc_adicional%></h4></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+    
+        </main>
+        <footer></footer>
+    </div>
 <script>
+
+    function carregar10() {
+        let tr = document.createElement('tr');
+        let table = document.createElement('table');
+        let tbody = document.createElement('tbody');
+        let tr2 = document.createElement('tr');
+        let td = document.createElement('td');
+        let h4 = document.createElement('h4');
+    }
+
     function irpara(nome,id) {
         window.location.href = ('/view_publicacao/'+nome+'/'+id);
     }
+
+    $(window).on('load',()=>{
+        $('#loading').fadeOut('slow');
+        $('#tudo').toggle('fast');
+    });
 </script>
 </body>
 </html>

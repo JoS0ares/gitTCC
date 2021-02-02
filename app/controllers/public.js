@@ -68,3 +68,36 @@ module.exports.updatePublic = (application,req,res)=>{
         res.redirect('back');
     });
 }
+module.exports.updateUnicParam = (application,req,res)=>{
+    let connection = application.config.dbConnection.dbConnection();
+    let bancoModel = new application.app.models.banco(connection);
+    let data = req.body.selects_val;
+
+    console.log(data);
+
+    let counter = 0;
+    data.forEach(e=>{
+        bancoModel.updateUnicParam(ObjectID(e.id),JSON.parse(e.val),()=>{
+            console.log('public ' + e.id + ' alterado')
+            
+            counter++
+            if(counter == data.length) return res.redirect('back');
+        });
+    });
+}
+module.exports.deletePublic = (application,req,res)=>{
+    let connection = application.config.dbConnection.dbConnection();
+    let bancoModel = new application.app.models.banco(connection);
+    let ids = req.body.ids;
+    console.dir(ids);
+
+    let counter = 0;
+    ids.forEach(e=>{
+        bancoModel.deletePublic(ObjectID(e),(err,result)=>{
+            if(err) console.log(err);
+            console.log(e + ' deletado');
+            counter++
+            if(counter == ids.length) return res.redirect('back');
+        });
+    });
+}

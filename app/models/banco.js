@@ -1,3 +1,5 @@
+const { ObjectID } = require("mongodb");
+
 class Banco {
     constructor(connection) {
         this._connection = connection;
@@ -20,9 +22,6 @@ class Banco {
     criarTab(dados,callback) {
         this._connection.collection('tablatura').save(dados, callback);
     }
-    deleteTab(id,callback) {
-
-    }
     updatePublic(id,dados,callback) {
         this._connection.collection('publicacao').updateOne({_id: id},{
             $set: {
@@ -34,8 +33,23 @@ class Banco {
             }
         },callback);
     }
+    updateUnicParam(id,data,callback) {
+        this._connection.collection('publicacao').updateOne({_id: id},{
+            $set: {
+                public: data
+            }
+        },callback);
+    }
     deletePublic(id,callback) {
+        this.getPublic(id,(err,result)=>{
+            if(err) console.log(err);
+            let id_tab = result[0].tab_id;
 
+            this._connection.collection('tablatura').deleteOne({_id: id_tab},(err,result)=>{
+                if(err) console.log(err);
+                this._connection.collection('publicacao').deleteOne({_id: id},callback);
+            });    
+        });
     }
     criarTrecho(id,dados,callback) {
         this._connection.collection('tablatura').find({_id: id}).toArray((err,results)=>{
@@ -135,7 +149,7 @@ class Banco {
         })
 
         console.log(regex);
-        this._connection.collection('publicacao').find({tags: {$all: regex}}).toArray(callback);
+        this._connection.collection('publicacao').find({tags: {$all: regex},public: true}).toArray(callback);
     }
 }
 

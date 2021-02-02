@@ -11,68 +11,146 @@
         margin: 0px;
         padding: 0px;
     }
+    #loading {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff;
+    }
+    #tudo {
+        display: none;
+    }
 </style>
 <body>
-    <header>
-        <ul>
-            <li><a href="">Publicações</a></li>
-            <li><a href="">Usuários</a></li>
-        </ul>     
-    </header>
-    <main>
-        <section class="publicacoes">
-            <table>
-                <!-- colunas: nomePublic,nomeBanda,bpm table,dataPublic,idPublic,public -->
-                <thead>
-                    <tr>
-                        <td>Nome da publicação</td>
-                        <td>Nome da banda</td>
-                        <td>BPM</td>
-                        <td>Data de criação</td>
-                        <td>ID da publicação</td>
-                        <td>Pública</td>
-                        <td>Ações</td>
-                        <td>Delete</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                    dados.forEach(e => {
-                    %>
-                    <tr>
-                        <td><h4><%= e.nome_public%></h4></td>
-                        <td><h4><%= e.nome_banda%></h4></td>
-                        <td><h4><%= e.bpm_table%></h4></td>
-                        <td><h4><%= e.data_public%></h4></td>
-                        <td><h4><%= e._id%></h4></td>
-                        <td><select name="public" class="required" id="public_<%=e._id%>">
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                            </select>
-                            <script>
-                                if(<%- e.public%>) $("#public_<%=e._id%> option[value='true']").attr('selected', 'true');
-                                else $("#public_<%=e._id%> option[value='false']").attr('selected', 'true');
-                            </script>
-                        </td>
-                        <td>
-                            <div>
-                                <a href="/espec_tablatura/<%= e.nome_public%>/<%= e._id%>">Edit</a>
-                                <a href="/view_publicacao/<%= e.nome_public%>/<%= e._id%>">View</a>
-                            </div>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="delete_publicacao" id="<%= e._id%>">
-                        </td>
-                    </tr>
-                    <%
-                    });
-                    %>
-                </tbody>
-            </table>
-        </section>
-        <section class="usuarios">
+    <div id="loading">
 
-        </section>
-    </main>
+    </div>
+    <div id="tudo">
+        <header>
+            <ul>
+                <li><a href="">Publicações</a></li>
+                <li><a href="">Usuários</a></li>
+            </ul>
+            <ul>
+                <li><button type="submit" id="btn_aplicar">Aplicar alterações</button></li>
+            </ul>
+        </header>
+        <main>
+            <section class="publicacoes">
+                <table>
+                    <!-- colunas: nomePublic,nomeBanda,bpm table,dataPublic,idPublic,public -->
+                    <thead>
+                        <tr>
+                            <td>Nome da publicação</td>
+                            <td>Nome da banda</td>
+                            <td>BPM</td>
+                            <td>Data de criação</td>
+                            <td>ID da publicação</td>
+                            <td>Pública</td>
+                            <td>Ações</td>
+                            <td>Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                        dados.forEach(e => {
+                        %>
+                        <tr>
+                            <td><h4><%= e.nome_public%></h4></td>
+                            <td><h4><%= e.nome_banda%></h4></td>
+                            <td><h4><%= e.bpm_table%></h4></td>
+                            <td><h4><%= e.data_public%></h4></td>
+                            <td><h4><%= e._id%></h4></td>
+                            <td><select name="public" class="required" id="<%=e._id%>">
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                                <script>
+                                    if(<%- e.public%>) $("select#<%=e._id%> option[value='true']").attr('selected', 'true');
+                                    else $("select#<%=e._id%> option[value='false']").attr('selected', 'true');
+                                </script>
+                            </td>
+                            <td>
+                                <div>
+                                    <a href="/espec_tablatura/<%= e.nome_public%>/<%= e._id%>">Edit</a>
+                                    <a href="/view_publicacao/<%= e.nome_public%>/<%= e._id%>">View</a>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="delete_publicacao" id="<%= e._id%>">
+                            </td>
+                        </tr>
+                        <%
+                        });
+                        %>
+                    </tbody>
+                </table>
+            </section>
+            <section class="usuarios">
+    
+            </section>
+        </main>
+    </div>
+    <script>
+
+        $('#btn_aplicar').click(e=>{
+            aplicar();
+        });
+
+        var clicks_aplicar = 0;
+
+        function aplicar() {
+            clicks_aplicar++
+            if(clicks_aplicar>1) return;
+            delete_aplicar(result=>{
+                if (result) console.log('pronto');
+                let selects = $('.required');
+                let selects_val = new Array();
+
+                console.log(selects);
+
+                for(var i = 0;i < selects.length;i++) {
+                    selects_val.push({
+                        id: selects[i].id,
+                        val: selects[i].options[selects[i].options.selectedIndex].value
+                    });
+                }
+
+                console.log(selects_val);
+
+                $.post('/update_public_publicacao', {
+                    selects_val: selects_val
+                }).always(()=>{
+                    window.location.reload();
+                });
+            });
+        }
+
+        function delete_aplicar(callback) {
+            if ($('input[type="checkbox"]:checked').length > 0) {
+                let element_delete = $('input[type="checkbox"]:checked');
+                let elements_delete_ids = new Array();
+                
+                for(var i = 0;i < element_delete.length;i++) {
+                    elements_delete_ids.push(element_delete[i].id);
+                }
+
+                $.post('/delete_publicacoes', {
+                    ids: elements_delete_ids
+                }).always(()=>{
+                    return callback(true);
+                });
+            }
+            else return callback(false);
+        }
+
+        $(window).on('load',()=>{
+            $('#loading').fadeOut('slow');
+            $('#tudo').toggle('fast');
+        });
+    </script>
 </body>
 </html>

@@ -14,8 +14,13 @@ module.exports = (application)=>{
     application.post('/criar_public', (req,res) => {
         return application.app.controllers.public.criarPublic(application,req,res);
     });
-    
     application.post('/update_publicacao/:id_public', (req,res) => {
-        application.app.controllers.public.updatePublic(application,req,res);
+        return application.app.controllers.public.updatePublic(application,req,res);
+    });
+    application.post('/update_public_publicacao', (req,res)=>{
+        return application.app.controllers.public.updateUnicParam(application,req,res);
+    });
+    application.post('/delete_publicacoes', (req,res)=>{
+        return application.app.controllers.public.deletePublic(application,req,res);
     });
 }

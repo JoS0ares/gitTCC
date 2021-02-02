@@ -4,8 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+<style>
+    #loading {
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff;
+    }
+    #tudo {
+        display: none;
+    }
+</style>
 <body>
-    
+    <div id="loading"></div>
+    <div id="tudo"></div>
+<script>
+    $(window).on('load',()=>{
+        $('#loading').fadeOut('slow');
+        $('#tudo').toggle('fast');
+    });
+</script>
 </body>
 </html>

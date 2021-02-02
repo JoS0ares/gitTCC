@@ -6,7 +6,7 @@ module.exports.admin = (application,req,res)=>{
     let bancoModel = new application.app.models.banco(connection);
 
     bancoModel.getAllPublic((err,result)=>{
-        if (err) return err;
+        if (err) console.log(err);
         res.render('admin_home.ejs', {dados: result});
     });
 }
