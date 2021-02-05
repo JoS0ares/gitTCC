@@ -40,6 +40,19 @@ class Banco {
             }
         },callback);
     }
+    likeOpt(id,param,callback) {
+        this.getPublic(id,(err,result)=>{
+            if (err) console.log(err);
+            console.log(result);
+            let like = (param) ? result[0].up + 1 : result[0].up - 1;
+            console.log(like);
+            this._connection.collection('publicacao').updateOne({_id: id},{
+                $set: {
+                    up: like
+                }
+            },callback);
+        });
+    }
     deletePublic(id,callback) {
         this.getPublic(id,(err,result)=>{
             if(err) console.log(err);

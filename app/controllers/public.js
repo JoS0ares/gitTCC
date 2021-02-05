@@ -39,6 +39,7 @@ module.exports.criarPublic = (application,req,res)=>{
         dados.data_public = new Date();
         dados.tab_id = tab._id;
         dados.public = false;
+        dados.up = 0;
 
         bancoModel.criarTags(dados, results=>{
             console.log(results);
@@ -99,5 +100,17 @@ module.exports.deletePublic = (application,req,res)=>{
             counter++
             if(counter == ids.length) return res.redirect('back');
         });
+    });
+}
+module.exports.like = (application,req,res)=>{
+    let connection = application.config.dbConnection.dbConnection();
+    let bancoModel = new application.app.models.banco(connection);
+    let data = req.body;
+    console.dir(data);
+
+    bancoModel.likeOpt(ObjectID(data.id),JSON.parse(data.param),()=>{
+        console.log('up ' + data.id);
+
+        return res.redirect('back');
     });
 }

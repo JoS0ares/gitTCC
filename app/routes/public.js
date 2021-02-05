@@ -23,4 +23,7 @@ module.exports = (application)=>{
     application.post('/delete_publicacoes', (req,res)=>{
         return application.app.controllers.public.deletePublic(application,req,res);
     });
+    application.post('/like', (req,res)=>{
+        return application.app.controllers.public.like(application,req,res);
+    });
 }
