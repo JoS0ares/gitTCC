@@ -43,45 +43,93 @@
         <main>
     
             <table>
-                <tbody>
-                    <%
-                    for(var i = 0;i < dados.length;i++){
-                    %>
-                    <tr>
-                        <div>
-                            <input type="checkbox" name="checks" class="check_required" id="<%= dados[i]._id%>" onclick="like(this.id);">
-                        </div>
-                        <table onclick="irpara('<%= dados[i].nome_public%>','<%= dados[i]._id%>');">
-                            <tbody>
-                                <tr>
-                                    <td><h3><%= dados[i].nome_public%></h3></td>
-                                    <td><h4><%= dados[i].bpm_table%></h4></td>
-                                </tr>
-                                <tr>
-                                    <td><h4><%= dados[i].nome_banda%></h4></td>
-                                    <td><h4><%= dados[i].up%></h4></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </tr>
-                    <%
-                    }
-                    %>
-                </tbody>
+                <tbody id="dados"></tbody>
             </table>
-    
+            <div>
+                <button id="btn_load_more">Mostrar mais</button>
+            </div>
         </main>
         <footer></footer>
     </div>
 <script>
 
-    function carregar10() {
+    const dados = <%- JSON.stringify(dados)%>;
+    var cont_dados = 10;
+    var travar = false;
+    console.log(cont_dados);
+    if (dados.length < cont_dados) carregar10(0,dados.length);
+    else carregar10(0,cont_dados);
+
+    $("#btn_load_more").click(()=>{
+        if (travar) return console.log("travar " + travar);
+        if ((cont_dados+10)>=dados.length) {
+            carregar10(cont_dados,dados.length);
+            travar = true;
+            return;
+        }
+        carregar10(cont_dados,(cont_dados+10));
+        cont_dados+=10;
+        console.log(cont_dados);
+    });
+
+    function carregar10(i,j) {
+        for(var i;i < j;i++){
+            createElement(dados[i].nome_public,dados[i].bpm_table,dados[i].nome_banda,dados[i].up,dados[i]._id);
+        }
+    }
+    function createElement(nome_public,bpm_table,nome_banda,up,id) {
+        let tbody_pai = document.getElementById('dados');
+
         let tr = document.createElement('tr');
+        let div = document.createElement('div');
+        let input = document.createElement('input');
+        input.type = "checkbox";
+        input.name = "checks";
+        input.className = "check_required";
+        input.id = id;
+        input.addEventListener('click',e=>{
+            like(input.id);
+        }, false);
+
         let table = document.createElement('table');
         let tbody = document.createElement('tbody');
         let tr2 = document.createElement('tr');
+        let tr22 = document.createElement('tr');
         let td = document.createElement('td');
+        let td2 = document.createElement('td');
+        let td1 = document.createElement('td');
+        let td12 = document.createElement('td');
+        let h3 = document.createElement('h3');
+        h3.innerHTML = nome_public;
+
         let h4 = document.createElement('h4');
+        h4.innerHTML = bpm_table;
+
+        let h41 = document.createElement('h4');
+        h41.innerHTML = nome_banda;
+
+        let h412 = document.createElement('h4');
+        h412.innerHTML = up;
+
+        div.appendChild(input)
+        tr.appendChild(div);
+
+        td.appendChild(h3)
+        tr2.appendChild(td);
+        td2.appendChild(h4)
+        tr2.appendChild(td2);
+        tbody.appendChild(tr2);
+        td1.appendChild(h41);
+        tr22.appendChild(td1);
+        td12.appendChild(h412)
+        tr22.appendChild(td12);
+        tbody.appendChild(tr22);
+        table.appendChild(tbody);
+        table.addEventListener('click',e=>{
+            irpara(nome_public,id)
+        },false);
+        tr.appendChild(table);
+        tbody_pai.appendChild(tr);
     }
 
     function irpara(nome,id) {
