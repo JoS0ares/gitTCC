@@ -43,8 +43,8 @@
                 <h1><%= document.nome_public %></h1>
                 <h4><%= document.desc_adicional + " / " + document.nome_banda %></h4>
             </p>
+            <label><input type="checkbox" id="<%= document._id%>" onclick="like(this.id)"><h4><%= document.up%></h4></label>
         </header>
-    
         <main>
             <%
             tablatura._trechos.forEach(e => {
@@ -124,6 +124,18 @@
         </div>
     </div>
 <script>
+    function like(id) {
+        console.log(id);
+        console.log($('#'+id)[0].checked);
+
+        $.post('/like', {
+            id: id,
+            param: $('#'+id)[0].checked
+        }).always(()=>{
+            console.log('foi');
+        });
+    }
+
     $(window).on('load',()=>{
         $('#loading').fadeOut('slow');
         $('#tudo').toggle('fast');
