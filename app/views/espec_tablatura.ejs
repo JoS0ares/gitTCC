@@ -190,8 +190,13 @@
                             </select></td>
                         </tr>
                         <tr>
-                            <td>Quantidade de compassos (menor que 4):</td>
-                            <td><input type="number" name="quant_compass" id="quant_compass" class="required"></td>
+                            <td>Quantidade de compassos:</td>
+                            <td><select name="quant_compass" id="quant_compass" class="required">
+                                <option value="1" selected>01</option>
+                                <option value="2">02</option>
+                                <option value="3">03</option>
+                                <option value="4">04</option>
+                            </select></td>
                         </tr>
                         <tr>
                             <td>Batidas por tempo:</td>
@@ -207,8 +212,17 @@
                             </select></td>
                         </tr>
                         <tr>
-                            <td>numero de linhas (menor que 8):</td>
-                            <td><input type="number" name="num_row" id="num_row" class="required"></td>
+                            <td>numero de linhas:</td>
+                            <td><select name="num_row" id="num_row" class="required">
+                                <option value="1">01</option>
+                                <option value="2">02</option>
+                                <option value="3">03</option>
+                                <option value="4">04</option>
+                                <option value="5">05</option>
+                                <option value="6" selected>06</option>
+                                <option value="7">07</option>
+                                <option value="8">08</option>
+                            </select></td>
                         </tr>
                     </table>
                     <p><button type="reset">Cancelar</button><button type="button">Concluir</button></p>
@@ -226,7 +240,6 @@
         <footer></footer>
     </div>
 <script>
-
     function check(forms) {
         let inputs = $(forms + ' .required');
         var len = inputs.length;
@@ -239,14 +252,14 @@
         if(!valid) return false;
         else return true;
     }
-
-    $('#update_publicacao button[type="button"]').click(()=>{
+    $('#update_publicacao button[type="button"]').click(e=>{
         if(check('#update_publicacao')) {select_salvar();document.getElementById("update_publicacao").submit()}
 
         else return alert('nope');
     })
 
     $('#novo_trecho button[type="button"]').click(()=>{
+        
         if(check('#novo_trecho')) return document.getElementById("novo_trecho").submit();
         
         else return alert('nope')
@@ -302,6 +315,8 @@
         $.post('/update_trecho',{
             trechos: table_trecho,
             id_tabela: <%- JSON.stringify(tablatura._id)%>
+        }).always(()=>{
+            console.log('foi');
         })
     }
 

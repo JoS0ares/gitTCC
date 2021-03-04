@@ -13,8 +13,10 @@ module.exports.viewPublic = (application,req,res)=>{
         bancoModel.getTab(ObjectID(dado.tab_id),(err,result)=>{
             if (err) return err;
             let tab = result[0];
-
-            res.render('publicacao.ejs', {document: dado,tablatura: tab});
+            bancoModel.view(ObjectID(req.params.id),(v)=>{
+                console.log(result[0]._id + ' view: ' + v);
+                return res.render('publicacao.ejs', {document: dado,tablatura: tab});
+            });
         });
     });
 }
@@ -40,6 +42,7 @@ module.exports.criarPublic = (application,req,res)=>{
         dados.tab_id = tab._id;
         dados.public = false;
         dados.up = 0;
+        dados.views = 0;
 
         bancoModel.criarTags(dados, results=>{
             console.log(results);

@@ -18,7 +18,7 @@ module.exports = (application)=>{
     });
     
     application.post('/update_trecho', (req,res) => {
-        application.app.controllers.tab.updateTrecho(application,req,res);
+        return application.app.controllers.tab.updateTrecho(application,req,res);
     });
 
 }

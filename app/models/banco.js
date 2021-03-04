@@ -5,7 +5,7 @@ class Banco {
         this._connection = connection;
     }
     getAllPublicTrue(callback) {
-        this._connection.collection('publicacao').find({public: true}).toArray(callback);
+        this._connection.collection('publicacao').find({public: true}).sort({views:-1}).toArray(callback);
     }
     getAllPublic(callback) {
         this._connection.collection('publicacao').find().toArray(callback);
@@ -51,6 +51,18 @@ class Banco {
                     up: like
                 }
             },callback);
+        });
+    }
+    view(id,callback) {
+        this.getPublic(id,(err,result)=>{
+            if(err) console.log(err);
+            let view = JSON.parse(result[0].views);
+            view += 1;
+            this._connection.collection('publicacao').updateOne({_id: id},{
+                $set: {
+                    views: view
+                }
+            },callback(view));
         });
     }
     deletePublic(id,callback) {

@@ -74,10 +74,10 @@
 
     function carregar10(i,j) {
         for(var i;i < j;i++){
-            createElement(dados[i].nome_public,dados[i].bpm_table,dados[i].nome_banda,dados[i].up,dados[i]._id);
+            createElement(dados[i].nome_public,dados[i].bpm_table,dados[i].nome_banda,dados[i].up,dados[i]._id,dados[i].views);
         }
     }
-    function createElement(nome_public,bpm_table,nome_banda,up,id) {
+    function createElement(nome_public,bpm_table,nome_banda,up,id,views) {
         let tbody_pai = document.getElementById('dados');
 
         let tr = document.createElement('tr');
@@ -90,6 +90,11 @@
         input.addEventListener('click',e=>{
             like(input.id);
         }, false);
+
+        let div2 = document.createElement('div');
+        let h4view = document.createElement('h4');
+        h4view.innerHTML = views;
+        div2.appendChild(h4view);
 
         let table = document.createElement('table');
         let tbody = document.createElement('tbody');
@@ -111,8 +116,9 @@
         let h412 = document.createElement('h4');
         h412.innerHTML = up;
 
-        div.appendChild(input)
+        div.appendChild(input);
         tr.appendChild(div);
+        tr.appendChild(div2);
 
         td.appendChild(h3)
         tr2.appendChild(td);

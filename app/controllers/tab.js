@@ -5,6 +5,7 @@ module.exports.criarTrecho = (application,req,res)=>{
 
     let connection = application.config.dbConnection.dbConnection();
     let bancoModel = new application.app.models.banco(connection);
+    console.log(req.body);
 
     bancoModel.criarTrecho(ObjectID(req.params.id) ,req.body, (err,result)=>{
         if (err) return err;
@@ -35,7 +36,7 @@ module.exports.updateTrecho = (application,req,res)=>{
 
     bancoModel.updateTrecho(ObjectID(req.body.id_tabela), req.body.trechos, (err,result)=>{
         if (err) return err
-        res.redirect('back');
+        return res.redirect('back');
     });
 }
 module.exports.deleteTrecho = (application,req,res)=>{
