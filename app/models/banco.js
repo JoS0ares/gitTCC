@@ -1,4 +1,5 @@
 const { ObjectID } = require("mongodb");
+const bcrypt = require('bcrypt');
 
 class Banco {
     constructor(connection) {
@@ -175,6 +176,31 @@ class Banco {
 
         console.log(regex);
         this._connection.collection('publicacao').find({tags: {$all: regex},public: true}).toArray(callback);
+    }
+    criarUsuario(dados,callback) {
+        if(dados.senha[0] != dados.senha[1]) {
+            return callback(dados,'bagulhos errados')
+        }
+        bcrypt.hash(dados.senha[0],10).then(hash=>{
+            let senhaencriptada = hash;
+
+            let obj = {
+                username: dados.nome_usuario,
+                password: senhaencriptada,
+                email: dados.email_usuario
+            }
+            this._connection.collection('user').save(obj,callback(obj));
+        });
+    }
+    getUsuario(nome_usuario,callback) {
+        this._connection.collection('user').find({username: nome_usuario}).toArray(callback);
+    }
+    login(dados,callback) {
+        this.getUsuario(dados.nome_usuario,(err,result)=>{
+            bcrypt.compare(dados.senha,result[0].password,(err,isMatch)=>{
+                return callback(result,isMatch);
+            });
+        });
     }
 }
 

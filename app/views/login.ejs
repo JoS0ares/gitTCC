@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablatura</title>
+    <title>Login</title>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <body>
     <header></header>
-    <main>
+    <main id="#cadastrar">
         <form action="/cadastrar" method="post">
             <table>
                 <tbody>
@@ -18,15 +18,35 @@
                     </tr>
                     <tr>
                         <td>Senha:</td>
-                        <td><input type="password" name="sernha1"></td>
+                        <td><input type="password" name="senha"></td>
                     </tr>
                     <tr>
                         <td>Confirmar a senha:</td>
-                        <td><input type="password" name="sernha1"></td>
+                        <td><input type="password" name="senha"></td>
                     </tr>
                     <tr>
                         <td>email:</td>
                         <td><input type="email" name="email_usuario"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <button type="reset">Cancelar</button>
+                <button type="submit">Enviar</button>
+            </p>
+        </form>
+    </main>
+    <main id="login">
+        <form action="/login" method="post">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Nome de usuário:</td>
+                        <td><input type="text" name="nome_usuario"></td>
+                    </tr>
+                    <tr>
+                        <td>Senha:</td>
+                        <td><input type="password" name="senha"></td>
                     </tr>
                 </tbody>
             </table>
