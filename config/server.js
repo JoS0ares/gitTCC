@@ -10,6 +10,8 @@ const jsonwebtoken = require('jsonwebtoken');
 const { application } = require('express');
 const {check, validationResult} = require('express-validator/check');
 const passport = require('passport');
+const expressSession = require('express-session');
+const flash = require('connect-flash');
 
 app.set('view engine', 'ejs');
 app.set('views', './app/views/');

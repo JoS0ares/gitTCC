@@ -181,26 +181,18 @@ class Banco {
         if(dados.senha[0] != dados.senha[1]) {
             return callback(dados,'bagulhos errados')
         }
-        bcrypt.hash(dados.senha[0],10).then(hash=>{
-            let senhaencriptada = hash;
-
-            let obj = {
-                username: dados.nome_usuario,
-                password: senhaencriptada,
-                email: dados.email_usuario
-            }
-            this._connection.collection('user').save(obj,callback(obj));
-        });
+        let obj = {
+            username: dados.username,
+            password: dados.password,
+            email: dados.email
+        }
+        this._connection.collection('user').save(obj,callback(undefined,obj));
     }
     getUsuario(nome_usuario,callback) {
         this._connection.collection('user').find({username: nome_usuario}).toArray(callback);
     }
-    login(dados,callback) {
-        this.getUsuario(dados.nome_usuario,(err,result)=>{
-            bcrypt.compare(dados.senha,result[0].password,(err,isMatch)=>{
-                return callback(result,isMatch);
-            });
-        });
+    getUsuarioId(id,callback) {
+        this._connection.collection('user').find({_id: id}).toArray(callback);
     }
 }
 
