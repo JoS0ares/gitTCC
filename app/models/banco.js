@@ -178,21 +178,8 @@ class Banco {
         this._connection.collection('publicacao').find({tags: {$all: regex},public: true}).toArray(callback);
     }
     criarUsuario(dados,callback) {
-        if(dados.senha[0] != dados.senha[1]) {
-            return callback(dados,'bagulhos errados')
-        }
-        let obj = {
-            username: dados.username,
-            password: dados.password,
-            email: dados.email
-        }
-        this._connection.collection('user').save(obj,callback(undefined,obj));
-    }
-    getUsuario(nome_usuario,callback) {
-        this._connection.collection('user').find({username: nome_usuario}).toArray(callback);
-    }
-    getUsuarioId(id,callback) {
-        this._connection.collection('user').find({_id: id}).toArray(callback);
+
+        return callback(undefined,dados);
     }
 }
 
